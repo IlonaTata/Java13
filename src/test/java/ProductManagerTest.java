@@ -9,21 +9,23 @@ import ru.netology.Smartphone;
 public class ProductManagerTest {
     ProductRepository repo= new ProductRepository();
     ProductManager manager = new ProductManager(repo);
-    Product type1 = new Product(1, ":Жизнь", 200);
-    Product type2 = new Book(2, ":Жизнь", 300, "Акунин");
-    Product type3 = new Smartphone(3, ":Телефон", 400, "Москва");
-
-
+    Product type1 = new Product(1, "Жизнь", 200);
+    Product type2 = new Book(2, "Счастье", 300, "Акунин");
+    Product type3 = new Smartphone(3, "Телефон", 400, "Москва");
+    Product type4 = new Book(4, "Рецепты", 500, "Толстой");
+    Product type5 = new Product(5, "Картошка", 50);
     @Test
     public void shouldSearchBy() {
         repo.save(type1);
         repo.save(type2);
         repo.save(type3);
+        repo.save(type4);
+        repo.save(type5);
         repo.findAll();
-        manager.searchBy("Телефон");
-        Product[] expected = {type3};
-        Product[] actual = manager.searchBy("Телефон");
-        Assertions.assertArrayEquals(expected, actual);
+        manager.searchBy("Картошка");
+        Product[] expected = {type5};
+        Product[] actual = manager.searchBy("Картошка");
+      Assertions.assertArrayEquals(expected,actual);
     }
 
     @Test
@@ -33,9 +35,9 @@ public class ProductManagerTest {
         repo.save(type3);
         repo.findAll();
         manager.searchBy("Жизнь");
-        Product[] expected = {type1,type2};
+        Product[] expected = {type1};
         Product[] actual = manager.searchBy("Жизнь");
-        Assertions.assertArrayEquals(expected, actual);
+        Assertions.assertArrayEquals(expected,actual);
     }
     @Test
     public void shouldSearchBy2() {
@@ -55,10 +57,10 @@ public class ProductManagerTest {
         repo.save(type2);
         repo.save(type3);
         repo.findAll();
-        manager.matches(type2,"Жизнь");
-        boolean expected = true;
-        boolean actual = manager.matches(type2,"Жизнь");
-        Assertions.assertEquals(expected, actual);
+        manager.searchBy("а");
+        Product[] expected = {type3};
+        Product[] actual = manager.searchBy("а");
+        Assertions.assertArrayEquals(expected, actual);
     }
     @Test
     public void shouldMatches1() {
@@ -66,14 +68,24 @@ public class ProductManagerTest {
         repo.save(type2);
         repo.save(type3);
         repo.findAll();
-        manager.matches(type2,"А");
-        boolean expected = false;
-        boolean actual = manager.matches(type2,"А");
-        Assertions.assertEquals(expected, actual);
+        manager.searchBy("Москва");
+        Product[] expected = {type3};
+        Product[] actual = manager.searchBy("Москва");
+        Assertions.assertArrayEquals(expected, actual);
     }
 
-
-
+    @Test
+    public void shouldMatches2() {
+        repo.save(type1);
+        repo.save(type2);
+        repo.save(type3);
+        repo.save(type4);
+        repo.findAll();
+        manager.searchBy("с");
+        Product[] expected = {type3,type4};
+        Product[] actual = manager.searchBy("с");
+        Assertions.assertArrayEquals(expected, actual);
+    }
 }
 
 
