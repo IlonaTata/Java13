@@ -14,6 +14,7 @@ public class ProductManagerTest {
     Product type3 = new Smartphone(3, "Телефон", 400, "Москва");
     Product type4 = new Book(4, "Рецепты", 500, "Толстой");
     Product type5 = new Product(5, "Картошка", 50);
+    Product type6 = new Smartphone(6, "Apple", 1000, "США");
     @Test
     public void shouldSearchBy() {
         repo.save(type1);
@@ -84,6 +85,20 @@ public class ProductManagerTest {
         manager.searchBy("с");
         Product[] expected = {type3,type4};
         Product[] actual = manager.searchBy("с");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void shouldMatches3() {
+        repo.save(type1);
+        repo.save(type2);
+        repo.save(type3);
+        repo.save(type4);
+        repo.save(type5);
+        repo.save(type6);
+        repo.findAll();
+        manager.searchBy("Телефон");
+        Product[] expected = {};
+        Product[] actual = manager.searchBy("Телефон");
         Assertions.assertArrayEquals(expected, actual);
     }
 }
